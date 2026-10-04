@@ -3,424 +3,944 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operasi Kantin Sihat - BM Tahun 4</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>Roda Ceria Bahasa - BBM Digital Kemahiran Mendengar & Bertutur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
-        html, body { 
-            width: 100vw;
-            height: 100vh;
+        :root {
+            --bg-color: #E0F7FA;
+            --primary: #0288D1;
+            --primary-dark: #01579B;
+            --accent: #FF9800;
+            --accent-hover: #F57C00;
+            --green: #4CAF50;
+            --green-dark: #388E3C;
+            --yellow: #FFEB3B;
+            --red: #F44336;
+            --purple: #8E24AA;
+            --card-bg: #FFFFFF;
+            --text-dark: #263238;
+            --shadow: 0 8px 24px rgba(0,0,0,0.12);
+            --radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            overflow: hidden !important; /* Memastikan tiada scrollbar langsung */
-            font-family: 'Nunito', sans-serif; 
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #d97706 100%);
-            user-select: none;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
-        .font-game { font-family: 'Fredoka One', cursive; }
-        .spin-wheel { transition: transform 3s cubic-bezier(0.15, 0.9, 0.15, 1); }
-        .btn-game { 
-            box-shadow: 0 4px 0 rgba(0,0,0,0.25); 
-            transition: all 0.1s ease-in-out; 
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#B2EBF2 15%, transparent 16%), radial-gradient(#B2EBF2 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            overflow-x: hidden;
         }
-        .btn-game:active { 
-            transform: translateY(3px); 
-            box-shadow: 0 1px 0 rgba(0,0,0,0.25); 
+
+        .top-nav {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        .bg-pop {
-            background-color: #2563eb;
-            background-image: radial-gradient(#60a5fa 3px, transparent 3px);
-            background-size: 20px 20px;
+
+        .btn-icon {
+            background: white;
+            border: 3px solid #B2EBF2;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            background: #E1F5FE;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 1000px;
+            padding: 30px;
+            position: relative;
+            min-height: 580px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 4px solid #B2EBF2;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fredoka', cursive, sans-serif;
+            text-align: center;
+        }
+
+        .main-title {
+            color: var(--primary-dark);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0px #E0F7FA;
+            margin-bottom: 5px;
+        }
+
+        .sub-title {
+            color: #546E7A;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .tagline {
+            background: #FFF3E0;
+            color: #E65100;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            border: 2px dashed #FFE0B2;
+            text-align: center;
+        }
+
+        .flow-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flow-step {
+            background: #F1F8E9;
+            color: var(--green-dark);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            margin: 15px 0 25px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 36px solid var(--red);
+            z-index: 10;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+        }
+
+        canvas#wheelCanvas {
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            background-color: #FFFFFF;
+            display: block;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 var(--accent-hover), 0 10px 15px rgba(0,0,0,0.15);
+            transition: all 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #FF8F00;
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--accent-hover), 0 5px 10px rgba(0,0,0,0.15);
+        }
+
+        .btn-secondary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--primary-dark);
+            transition: all 0.1s ease;
+        }
+
+        .selection-box {
+            margin-top: 15px;
+            padding: 15px 25px;
+            background: #E8EAF6;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #C5CAE9;
+            display: none;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .sp-badge {
+            background: var(--purple);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #CFD8DC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .dot.completed { background: var(--green); }
+        .dot.active { background: var(--accent); transform: scale(1.25); }
+
+        .audio-box {
+            background: #F0F4C3;
+            border: 3px dashed #AFB42B;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .question-img {
+            max-width: 100%;
+            max-height: 240px;
+            border-radius: 12px;
+            object-fit: contain;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #FFF;
+        }
+
+        .question-instruction {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #1B5E20;
+            background: #DCEDC8;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 2px solid #AED581;
+            width: 100%;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .teacher-panel {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 15px;
+            border: 2px solid #FFE0B2;
+            border-radius: 15px;
+            background: #FFF8E1;
+            overflow: hidden;
+        }
+
+        .teacher-header {
+            background: #FFE0B2;
+            padding: 10px 15px;
+            font-weight: 800;
+            color: #E65100;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .teacher-content {
+            padding: 15px;
+            display: none;
+            font-size: 0.95rem;
+            color: #424242;
+            text-align: left;
+        }
+
+        .teacher-content.show { display: block; }
+
+        .keywords {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .kw-tag {
+            background: #E1F5FE;
+            color: #0277BD;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .eval-box {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-eval {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            cursor: pointer;
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-eval.correct { background: var(--green); }
+        .btn-eval.guidance { background: var(--accent); }
+        .btn-eval.retry { background: var(--red); }
+
+        .eval-feedback {
+            margin-top: 15px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            min-height: 30px;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-weight: 800;
+            color: #78909C;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .info-table td, .info-table th {
+            border: 1px solid #B0BEC5;
+            padding: 8px 12px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .info-table th { background: #ECEFF1; }
+
+        @media (max-width: 600px) {
+            .main-title { font-size: 1.8rem; }
+            .wheel-container { width: 280px; height: 280px; }
+            canvas#wheelCanvas { width: 280px; height: 280px; }
+            .game-card { padding: 15px; }
+            .btn-primary { font-size: 1.1rem; padding: 12px 24px; }
         }
     </style>
 </head>
-<body class="bg-pop flex items-center justify-center p-2 sm:p-3">
+<body>
 
-    <!-- AUDIO ELEMENTS -->
-    <audio id="sfx-cheer" src="cheer.mp3"></audio>
-    <audio id="sfx-wheel" src="wheel_spin.mp3"></audio>
-    <audio id="misi1-audio" src=""></audio>
-    <audio id="misi3-audio" src=""></audio>
+    <audio id="audioQuestion"></audio>
+    <audio id="audioSpin" src="spin.mp3"></audio>
+    <audio id="audioDing" src="ding.mp3"></audio>
+    <audio id="audioCheer" src="cheer.mp3"></audio>
+    <audio id="audioClick" src="click.mp3"></audio>
 
-    <!-- BINGKAI UTAMA LANDSCAPE (FIT 100% SCREEN TANPA SCROLL) -->
-    <div class="w-full h-full max-w-[1280px] max-h-[720px] bg-amber-400 rounded-3xl border-8 border-yellow-300 shadow-2xl flex flex-col justify-between overflow-hidden p-2 sm:p-3 relative">
-        
-        <!-- HEADER GAME -->
-        <header class="bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500 p-2 rounded-2xl border-4 border-white shadow-md flex justify-between items-center text-white shrink-0">
-            <div class="flex items-center space-x-2">
-                <span class="text-2xl sm:text-3xl filter drop-shadow">🏫</span>
-                <div>
-                    <h1 class="font-game text-base sm:text-xl text-yellow-200 tracking-wide drop-shadow-[0_2px_0_rgba(0,0,0,0.4)]">OPERASI KANTIN SIHAT</h1>
-                    <p class="text-[9px] sm:text-xs text-white font-black opacity-90">BM Tahun 4 • Kemahiran Mendengar & Bertutur</p>
+    <div class="top-nav">
+        <button class="btn-icon" onclick="playClickSound(); showModal('infoModal')">ℹ INFO GURU</button>
+        <button class="btn-icon" onclick="playClickSound(); goHome()">⌂ UTAMA</button>
+    </div>
+
+    <div class="game-card">
+
+        <div class="flow-container">
+            <div class="flow-step">🎧 DENGAR</div>
+            <div class="flow-step">🧠 FIKIR</div>
+            <div class="flow-step">🗣️ BERTUTUR</div>
+            <div class="flow-step">⭐ BERJAYA</div>
+        </div>
+
+        <!-- PAGE 1: UTAMA -->
+        <div id="pageHome" class="page active">
+            <h1 class="main-title">RODA CERIA BAHASA</h1>
+            <p class="sub-title">Cabaran Lisan Spontan & KBAT Kantin Sekolah</p>
+            
+            <div class="tagline">“Dengar dengan teliti, fikir dengan bijak, bertutur dengan yakin!”</div>
+
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <canvas id="wheelCanvas" width="360" height="360"></canvas>
+            </div>
+
+            <button id="spinBtn" class="btn-primary" onclick="playClickSound(); spinWheel()">🎡 PUTAR RODA</button>
+
+            <div id="spinResultBox" class="selection-box">
+                <p style="font-weight: 700; color: #3F51B5; margin-bottom: 5px;">CABARAN ANDA ADALAH...</p>
+                <h3 id="selectedSpTitle" style="color: var(--primary-dark); margin-bottom: 10px;">-</h3>
+                <button class="btn-secondary" onclick="playClickSound(); startSpChallenge()">MULA CABARAN ➔</button>
+            </div>
+        </div>
+
+        <!-- PAGE 2: SOALAN -->
+        <div id="pageQuestion" class="page">
+            <div id="spBadge" class="sp-badge">SOALAN 1</div>
+            
+            <div class="progress-dots" id="progressDots">
+                <div class="dot">1</div><div class="dot">2</div><div class="dot">3</div><div class="dot">4</div><div class="dot">5</div>
+                <div class="dot">6</div><div class="dot">7</div><div class="dot">8</div><div class="dot">9</div><div class="dot">10</div>
+            </div>
+
+            <div class="audio-box">
+                <img id="questionImage" class="question-img" src="" alt="Gambar Soalan">
+                
+                <div id="questionInstruction" class="question-instruction">
+                    BERDASARKAN AUDIO: Arahan soalan...
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
+                    <button class="btn-primary" onclick="playClickSound(); playQuestionAudio()" style="font-size: 1rem; padding: 10px 20px;">
+                        ▶ DENGAR SOALAN
+                    </button>
+                    <button class="btn-secondary" onclick="playClickSound(); playQuestionAudio()" style="font-size: 1rem; padding: 10px 20px; background: #78909C;">
+                        ↻ ULANG AUDIO
+                    </button>
                 </div>
             </div>
-            <div class="w-36 sm:w-48 bg-blue-950/80 p-1.5 rounded-xl border-2 border-yellow-300 shadow-inner">
-                <div class="flex justify-between text-[10px] font-black text-yellow-300 mb-0.5">
-                    <span>METER SIHAT</span>
-                    <span id="meter-text">0%</span>
+
+            <p style="font-weight: 700; color: #546E7A; margin: 10px 0;">Sila minta murid menjawab secara lisan kepada guru.</p>
+
+            <div class="teacher-panel">
+                <div class="teacher-header" onclick="playClickSound(); toggleTeacherPanel()">
+                    <span>🔐 PANDUAN GURU (Klik untuk buka/tutup)</span>
+                    <span id="panelArrow">▼</span>
                 </div>
-                <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-yellow-200">
-                    <div id="meter-bar" class="bg-gradient-to-r from-green-400 to-emerald-300 h-full w-0 transition-all duration-500"></div>
+                <div class="teacher-content" id="teacherContent">
+                    <p><strong>Teks Audio / Situasi Soalan:</strong></p>
+                    <p id="tAudioText" style="margin-bottom: 8px; font-style: italic; background: #FFF; padding: 6px; border-radius: 6px; white-space: pre-line;">-</p>
+                    
+                    <p><strong>Rangka Jawapan Guru:</strong></p>
+                    <p id="tAnswer" style="margin-bottom: 8px; color: var(--green-dark); font-weight: 700; white-space: pre-line;">-</p>
+                    
+                    <p><strong>Kata Kunci Jawapan:</strong></p>
+                    <div class="keywords" id="tKeywords"></div>
                 </div>
             </div>
-        </header>
 
-        <!-- PAPARAN KANDUNGAN UTAMA (LANDSCAPE OPTIMIZED) -->
-        <main id="app-content" class="flex-1 my-2 bg-gradient-to-b from-sky-400 to-blue-600 rounded-2xl border-4 border-white p-2 sm:p-3 flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
-            <!-- Kandungan interaktif dimuatkan oleh JavaScript -->
-        </main>
+            <div class="eval-box">
+                <button class="btn-eval correct" onclick="playClickSound(); evaluateAnswer('correct')">✓ BETUL</button>
+                <button class="btn-eval guidance" onclick="playClickSound(); evaluateAnswer('guidance')">~ PERLU BIMBINGAN</button>
+                <button class="btn-eval retry" onclick="playClickSound(); evaluateAnswer('retry')">↻ CUBA LAGI</button>
+            </div>
 
-        <!-- FOOTER GAME -->
-        <footer class="bg-amber-300 p-1.5 rounded-2xl border-4 border-white flex justify-between items-center shrink-0">
-            <button onclick="showMenu()" class="bg-red-500 hover:bg-red-600 text-white font-game py-1 px-3 rounded-xl text-xs sm:text-sm btn-game border-2 border-white">
-                🏠 Menu Utama
+            <div class="eval-feedback" id="evalFeedback"></div>
+
+            <button id="nextBtn" class="btn-secondary" style="display: none; margin-top: 15px;" onclick="playClickSound(); nextQuestion()">
+                KEMBALI KE RODA ➔
             </button>
-            <div class="text-[11px] text-blue-950 font-black tracking-wide hidden sm:block">
-                Mod Pembelajaran Interaktif Tahun 4
+        </div>
+
+        <!-- PAGE 3: TAMAT -->
+        <div id="pageComplete" class="page">
+            <h1 class="main-title" style="color: var(--green);">TAHNIAH! 🎉</h1>
+            <p class="sub-title">Semua 10 soalan Roda Ceria Bahasa telah selesai dijawab!</p>
+
+            <p style="text-align: center; max-width: 600px; font-size: 1.1rem; margin: 20px 0; line-height: 1.5;">
+                Syabas! Kamu telah menunjukkan kemahiran bertutur secara kritis, santun, dan bernas dalam menjaga kebersihan serta kesihatan di kantin sekolah.
+            </p>
+
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <button class="btn-primary" onclick="playClickSound(); restartGame()">🔄 MAIN SEMULA</button>
+                <button class="btn-secondary" onclick="playClickSound(); goHome()">🎡 KEMBALI KE RODA</button>
             </div>
-            <button onclick="alert('Selesaikan tugasan dan bertutur secara lisan bersama rakan kelas anda!')" class="bg-blue-600 hover:bg-blue-700 text-white font-game py-1 px-3 rounded-xl text-xs sm:text-sm btn-game border-2 border-white">
-                💡 Panduan
-            </button>
-        </footer>
+        </div>
+
+    </div>
+
+    <!-- INFO GURU MODAL -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="playClickSound(); closeModal('infoModal')">&times;</span>
+            <h2 style="color: var(--primary-dark); margin-bottom: 10px;">ℹ INFO GURU</h2>
+            <table class="info-table">
+                <tr><th>NAMA BBM</th><td>Roda Ceria Bahasa (10 Soalan)</td></tr>
+                <tr><th>FOKUS</th><td>Kemahiran Mendengar dan Bertutur (KBAT & Kritis)</td></tr>
+                <tr><th>SASARAN</th><td>Murid Sekolah Rendah</td></tr>
+                <tr><th>TEMA</th><td>Kebersihan dan Kesihatan Kantin Sekolah</td></tr>
+            </table>
+        </div>
     </div>
 
     <script>
-        let state = { progress: 0, m1Completed: false, m2Completed: false, m3Completed: false, m2Found: [] };
-
-        function updateProgress(val) {
-            state.progress = val;
-            document.getElementById('meter-bar').style.width = val + '%';
-            document.getElementById('meter-text').innerText = val + '%';
+        function playClickSound() {
+            try {
+                const clickAudio = document.getElementById('audioClick');
+                if (clickAudio && clickAudio.currentTime !== undefined) {
+                    clickAudio.currentTime = 0;
+                    clickAudio.play().catch(e => {});
+                }
+            } catch(e) {}
         }
 
-        function playSfx(id) {
-            const el = document.getElementById(id);
-            if(el) { el.currentTime = 0; el.play().catch(()=>{}); }
-        }
-
-        // ==========================================
-        // GAMBAR 1: MENU UTAMA (BANER GAME)
-        // ==========================================
-        function showMenu() {
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full flex flex-col justify-between items-center space-y-2">
-                    <!-- RUANG BANNER GAME (GAMBAR 1) -->
-                    <div class="w-full h-28 sm:h-36 bg-amber-200 rounded-xl border-4 border-white shadow-md overflow-hidden relative">
-                        <img src="banner.png" alt="Banner Game" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/800x200/f59e0b/ffffff?text=OPERASI+KANTIN+SIHAT'">
-                    </div>
-
-                    <div class="bg-yellow-300 border-2 border-white text-blue-950 px-4 py-1 rounded-full text-xs font-black shadow">
-                        👋 Selamat Datang Ejen! Pilih Misi Untuk Bermula:
-                    </div>
-
-                    <!-- BUTANG 3 MISI UTAMA -->
-                    <div class="grid grid-cols-3 gap-3 w-full flex-1">
-                        <button onclick="startMisi1()" class="bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl border-4 border-white p-2 flex flex-col items-center justify-center btn-game shadow-md">
-                            <span class="text-2xl sm:text-3xl">🎧</span>
-                            <span class="font-game text-xs sm:text-base text-yellow-200">MISI 1</span>
-                            <span class="text-[10px] font-black opacity-90">Suara Misteri</span>
-                            <span class="mt-1 text-[9px] bg-black/30 px-2 py-0.5 rounded-full">${state.m1Completed ? '✓ SELESAI' : 'TERBUKA'}</span>
-                        </button>
-
-                        <button onclick="${state.m1Completed ? 'startMisi2()' : 'alert(\'Selesaikan Misi 1 dahulu!\')'}" class="${state.m1Completed ? 'bg-blue-500 hover:bg-blue-400' : 'bg-slate-500 opacity-70'} text-white rounded-2xl border-4 border-white p-2 flex flex-col items-center justify-center btn-game shadow-md">
-                            <span class="text-2xl sm:text-3xl">🔍</span>
-                            <span class="font-game text-xs sm:text-base text-yellow-200">MISI 2</span>
-                            <span class="text-[10px] font-black opacity-90">Detektif Kantin</span>
-                            <span class="mt-1 text-[9px] bg-black/30 px-2 py-0.5 rounded-full">${state.m2Completed ? '✓ SELESAI' : '🔒 KUNCI'}</span>
-                        </button>
-
-                        <button onclick="${state.m2Completed ? 'startMisi3()' : 'alert(\'Selesaikan Misi 2 dahulu!\')'}" class="${state.m2Completed ? 'bg-purple-600 hover:bg-purple-500' : 'bg-slate-500 opacity-70'} text-white rounded-2xl border-4 border-white p-2 flex flex-col items-center justify-center btn-game shadow-md">
-                            <span class="text-2xl sm:text-3xl">🎡</span>
-                            <span class="font-game text-xs sm:text-base text-yellow-200">MISI 3</span>
-                            <span class="text-[10px] font-black opacity-90">Roda Cabaran</span>
-                            <span class="mt-1 text-[9px] bg-black/30 px-2 py-0.5 rounded-full">${state.m3Completed ? '✓ SELESAI' : '🔒 KUNCI'}</span>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // ==========================================
-        // GAMBAR 2: MISI 1 (AUDIO & SOALAN)
-        // ==========================================
-        const m1Data = [
-            { img: "soalan1.png", audio: "audio1.mp3", options: [
-                { text: "Biarkan sahaja. Nanti ada orang bersihkan.", correct: false },
-                { text: "Mari kita kutip sampah dan buang ke dalam tong.", correct: true },
-                { text: "Bukan kita yang kotorkan.", correct: false }
-            ]}
+        // Senarai 10 Soalan Baharu (Aras Kritis & KBAT)
+        const questionsList = [
+            { 
+                id: 1, 
+                title: "Soalan 1: Keselamatan Makanan Terdedah", 
+                audioFile: "soalan1.mp3", 
+                imageFile: "gambar1.jpg", 
+                instruction: "Berdasarkan panduan kebersihan dalam e-Buku, kamu melihat penjual kantin membiarkan kuih-muih terdedah tanpa penutup. Apakah respons lisan yang santun dan bernas untuk kamu sampaikan kepada penjual tersebut?", 
+                audioText: "Situasi: Penjual kantin membiarkan kuih-muih terdedah tanpa penutup di atas meja jualan.", 
+                answer: "Mak cik/Pak cik, maafkan saya. Makanan ini elok ditutup rapat supaya tidak dihinggapi lalat dan kuman demi menjaga kesihatan murid-murid.", 
+                keywords: ["maafkan saya", "ditutup rapat", "lalat dan kuman", "kesihatan murid"] 
+            },
+            { 
+                id: 2, 
+                title: "Soalan 2: Pengurusan Sisa Makanan & Longkang", 
+                audioFile: "soalan2.mp3", 
+                imageFile: "gambar2.jpg", 
+                instruction: "Mengapakah amalan membuang sisa makanan ke dalam singki atau longkang kantin dianggap membahayakan kesihatan awam di sekolah?", 
+                audioText: "Soalan KBAT: Impak membuang sisa makanan ke dalam singki atau longkang kantin.", 
+                answer: "Kerana sisa makanan membiakkan lalat dan tikus, menyebabkan saluran tersumbat serta mengeluarkan bau busuk yang membawa penyakit.", 
+                keywords: ["membiakkan lalat/tikus", "saluran tersumbat", "bau busuk", "penyakit"] 
+            },
+            { 
+                id: 3, 
+                title: "Soalan 3: Nutrisi & Pemilihan Makanan Berkhasiat", 
+                audioFile: "soalan3.mp3", 
+                imageFile: "gambar3.jpg", 
+                instruction: "Dalam e-Buku, kita mempelajari tentang Pemakanan Sihat. Jika rakan kamu mahu membeli minuman manis bergas setiap hari di kantin, bagaimanakah kamu mentafsir risikonya dan menasihatinya secara sopan?", 
+                audioText: "Situasi: Rakan ingin membeli minuman manis bergas setiap hari di kantin sekolah.", 
+                answer: "Saya akan beritahu rakan dengan mesra bahawa minuman manis boleh menyebabkan kerosakan gigi serta obesiti, lalu mengajak dia memilih air masak atau jus buah segar.", 
+                keywords: ["kerosakan gigi", "obesiti", "air masak", "jus buah segar"] 
+            },
+            { 
+                id: 4, 
+                title: "Soalan 4: Kebersihan Peralatan Makan", 
+                audioFile: "soalan4.mp3", 
+                imageFile: "gambar4.jpg", 
+                instruction: "Sekiranya kamu mendapati mangkuk mi yang diberikan oleh penjual kantin masih berminyak dan kotor, apakah tindakan serta respons lisan yang patut kamu ambil?", 
+                audioText: "Situasi: Mangkuk mi yang diterima daripada penjual kantin masih berminyak dan kotor.", 
+                answer: "Saya akan memulangkan mangkuk itu secara berhemah sambil berkata: 'Maaf mak cik, mangkuk ini agak kotor. Bolehkah tukarkan dengan mangkuk yang bersih?'", 
+                keywords: ["memulangkan secara berhemah", "maaf mak cik", "tukarkan mangkuk bersih"] 
+            },
+            { 
+                id: 5, 
+                title: "Soalan 5: Etika Beratur & Keselamatan Cecair Panas", 
+                audioFile: "soalan5.mp3", 
+                imageFile: "gambar5.jpg", 
+                instruction: "Mengapakah tindakan berlari-lari sambil membawa makanan atau sup panas di kantin sekolah sangat berbahaya dari sudut keselamatan dan kebersihan?", 
+                audioText: "Soalan KBAT: Bahaya berlari sambil membawa makanan atau sup panas di kantin.", 
+                answer: "Tindakan itu boleh menyebabkan makanan panas tumpah, melecurkan kulit rakan, dan mengotorkan lantai kantin sehingga licin.", 
+                keywords: ["makanan tumpah", "melecurkan kulit", "mengotorkan lantai", "licin"] 
+            },
+            { 
+                id: 6, 
+                title: "Soalan 6: Integriti Kebersihan Meja Makan", 
+                audioFile: "soalan6.mp3", 
+                imageFile: "gambar6.jpg", 
+                instruction: "Selepas selesai makan di kantin, kamu mendapati terdapat sisa kuah yang tumpah di atas meja. Mengapakah kamu bertanggungjawab mengelapnya walaupun itu bukan tumpahan kamu?", 
+                audioText: "Situasi: Terdapat sisa kuah tumpah di atas meja kantin yang bukan disebabkan oleh kamu.", 
+                answer: "Kerana menjaga kebersihan kantin ialah tanggungjawab bersama supaya meja sentiasa bersih, selesa, dan bebas kuman untuk pengguna seterusnya.", 
+                keywords: ["tanggungjawab bersama", "bersih dan selesa", "bebas kuman"] 
+            },
+            { 
+                id: 7, 
+                title: "Soalan 7: Penyemakan Tarikh Luput Makanan", 
+                audioFile: "soalan7.mp3", 
+                imageFile: "gambar7.jpg", 
+                instruction: "Mengapakah e-Buku menekankan supaya murid sentiasa menyemak tarikh luput pada pembungkus makanan di kantin sebelum memakannya?", 
+                audioText: "Soalan KBAT: Kepentingan menyemak tarikh luput pembungkus makanan.", 
+                answer: "Untuk memastikan makanan itu masih segar dan selamat dimakan supaya kita tidak terkena keracunan makanan.", 
+                keywords: ["makanan segar", "selamat dimakan", "elak keracunan makanan"] 
+            },
+            { 
+                id: 8, 
+                title: "Soalan 8: Kebersihan Tangan Sebelum & Selepas Makan", 
+                audioFile: "soalan8.mp3", 
+                imageFile: "gambar8.jpg", 
+                instruction: "Mengapakah mencuci tangan menggunakan sabun di singki kantin lebih berkesan berbanding hanya mengelap tangan dengan tisu sebelum makan?", 
+                audioText: "Soalan KBAT: Kelebihan cuci tangan dengan sabun berbanding mengelap dengan tisu.", 
+                answer: "Mencuci tangan dengan sabun dan air mengalir dapat membunuh kuman dan membuang minyak pada tangan secara berkesan.", 
+                keywords: ["sabun & air mengalir", "membunuh kuman", "membuang minyak"] 
+            },
+            { 
+                id: 9, 
+                title: "Soalan 9: Pengurangan Penggunaan Plastik Sekali Guna", 
+                audioFile: "soalan9.mp3", 
+                imageFile: "gambar9.jpg", 
+                instruction: "Bagaimanakah amalan membawa bekas makanan sendiri dari rumah dapat menyokong kempen Kebersihan dan Kesihatan Kantin Sekolah?", 
+                audioText: "Soalan KBAT: Kebaikan membawa bekas makanan sendiri ke kantin sekolah.", 
+                answer: "Membawa bekas sendiri mengurangkan sampah plastik di kantin dan memastikan kebersihan makanan lebih terjamin.", 
+                keywords: ["mengurangkan sampah plastik", "kebersihan makanan terjamin"] 
+            },
+            { 
+                id: 10, 
+                title: "Soalan 10: Peranan Murid Sebagai 'Duta Kebersihan'", 
+                audioFile: "soalan10.mp3", 
+                imageFile: "gambar10.jpg", 
+                instruction: "Sekiranya kamu dilantik sebagai Pengawas Kantin, apakah cadangan lisan yang paling kritis untuk memastikan semua murid menjaga kebersihan kawasan kantin?", 
+                audioText: "Situasi KBAT: Cadangan anda sebagai Pengawas Kantin untuk kebersihan.", 
+                answer: "Saya mencadangkan pembudayaan amalan 'Susun Pinggan dan Buang Sisa' secara kendiri serta penyediaan tong sampah mengikut kategori sisa.", 
+                keywords: ["Susun Pinggan dan Buang Sisa", "kategori sisa", "amalan kendiri"] 
+            }
         ];
 
-        function startMisi1() {
-            const item = m1Data[0];
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full flex flex-col justify-between items-center">
-                    <span class="bg-yellow-400 text-blue-950 px-3 py-0.5 rounded-full text-xs font-black border-2 border-white">MISI 1: SUARA MISTERI</span>
+        let selectedQuestionIndex = null;
+        let completedQuestions = new Array(10).fill(false);
 
-                    <div class="grid grid-cols-12 gap-3 w-full flex-1 items-center my-1">
-                        <!-- GAMBAR & BUTANG AUDIO -->
-                        <div class="col-span-5 bg-indigo-800/80 p-2 rounded-2xl border-4 border-white flex flex-col items-center justify-center h-full">
-                            <div class="w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-xl overflow-hidden border-2 border-yellow-300 mb-2">
-                                <img src="${item.img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150/3b82f6/ffffff?text=Gambar+Soalan'">
-                            </div>
-                            <button onclick="playMisi1Audio('${item.audio}')" class="bg-yellow-400 hover:bg-yellow-300 text-blue-950 font-game px-3 py-1.5 rounded-xl text-xs btn-game border-2 border-white flex items-center space-x-1">
-                                <span>🔊</span> <span>DENGAR AUDIO</span>
-                            </button>
-                        </div>
-
-                        <!-- PILIHAN JAWAPAN -->
-                        <div class="col-span-7 flex flex-col justify-center space-y-2 h-full">
-                            ${item.options.map((opt, i) => `
-                                <button onclick="checkM1(${opt.correct})" class="w-full bg-white hover:bg-yellow-100 text-blue-950 font-black p-2 rounded-xl border-2 border-blue-400 text-left text-xs sm:text-sm shadow flex items-center space-x-2 transition">
-                                    <span class="bg-blue-600 text-white w-6 h-6 rounded-lg flex items-center justify-center font-game text-xs shrink-0">${String.fromCharCode(65+i)}</span>
-                                    <span>${opt.text}</span>
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function playMisi1Audio(src) {
-            const a = document.getElementById('misi1-audio');
-            a.src = src;
-            a.play().catch(()=> alert("Sila pastikan fail " + src + " dimasukkan."));
-        }
-
-        function checkM1(isCorrect) {
-            if(isCorrect) {
-                state.m1Completed = true;
-                updateProgress(33);
-                showMisi1Selesai();
-            } else {
-                alert("Jawapan kurang tepat. Sila cuba lagi!");
-            }
-        }
-
-        // ==========================================
-        // GAMBAR 3: MISI 1 SELESAI (SOUND CHEER)
-        // ==========================================
-        function showMisi1Selesai() {
-            playSfx('sfx-cheer');
-            confetti({ particleCount: 120, spread: 80 });
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full flex flex-col items-center justify-center space-y-2 text-center">
-                    <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-yellow-300 shadow-xl bg-white">
-                        <img src="misi1_selesai.png" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150/10b981/ffffff?text=Misi+1+Selesai'">
-                    </div>
-                    <h2 class="font-game text-xl sm:text-2xl text-yellow-300 drop-shadow">TAHNIAH! MISI 1 SELESAI!</h2>
-                    <div class="bg-white/90 border-2 border-emerald-400 p-1 px-4 rounded-xl text-xs font-black text-emerald-900">
-                        Situasi Selesai: 5 / 5 | Bintang: ⭐⭐⭐⭐⭐
-                    </div>
-                    <button onclick="startMisi2()" class="bg-emerald-500 hover:bg-emerald-400 text-white font-game py-2 px-6 rounded-xl text-xs sm:text-sm btn-game border-2 border-white">
-                        TERUSKAN KE MISI 2 ➔
-                    </button>
-                </div>
-            `;
-        }
-
-        // ==========================================
-        // GAMBAR 4 & 5: MISI 2 (PREMIS & SOALAN)
-        // ==========================================
-        const premisList = [
-            { id: 1, title: "Sampah Bersepah", isProblem: true, img: "premis_sampah.png" },
-            { id: 2, title: "Cuci Tangan", isProblem: false, img: "premis_singki.png" },
-            { id: 3, title: "Makanan Terdedah", isProblem: true, img: "premis_makanan.png" },
-            { id: 4, title: "Makanan Ditutup", isProblem: false, img: "premis_tutup.png" },
-            { id: 5, title: "Tangan Kotor", isProblem: true, img: "premis_tangankotor.png" }
+        /* SEKTOR RODA (10 SOALAN) */
+        const sectors = [
+            { color: "#F44336", label: "S1", index: 0 },
+            { color: "#E91E63", label: "S2", index: 1 },
+            { color: "#9C27B0", label: "S3", index: 2 },
+            { color: "#673AB7", label: "S4", index: 3 },
+            { color: "#3F51B5", label: "S5", index: 4 },
+            { color: "#2196F3", label: "S6", index: 5 },
+            { color: "#00BCD4", label: "S7", index: 6 },
+            { color: "#009688", label: "S8", index: 7 },
+            { color: "#4CAF50", label: "S9", index: 8 },
+            { color: "#FF9800", label: "S10", index: 9 }
         ];
 
-        function startMisi2() {
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full flex flex-col justify-between items-center">
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-yellow-400 text-blue-950 px-3 py-0.5 rounded-full text-xs font-black border-2 border-white">MISI 2: DETEKTIF KANTIN</span>
-                        <span class="bg-blue-900 text-yellow-300 px-2 py-0.5 rounded-full text-xs font-black border border-yellow-300">Masalah: ${state.m2Found.length}/3</span>
-                    </div>
+        let startAngle = 0;
+        const arc = (2 * Math.PI) / sectors.length;
+        let isSpinning = false;
 
-                    <!-- PREMIS KANTIN (5 GAMBAR LANDSCAPE) -->
-                    <div class="grid grid-cols-5 gap-2 w-full my-auto">
-                        ${premisList.map(p => `
-                            <button onclick="inspectPremis(${p.id}, '${p.title}',${p.isProblem})" class="bg-white hover:bg-yellow-200 p-1.5 rounded-2xl border-4 border-blue-300 transition flex flex-col items-center shadow btn-game">
-                                <div class="w-full h-16 sm:h-20 rounded-xl overflow-hidden mb-1 border border-slate-200">
-                                    <img src="${p.img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/100/f59e0b/ffffff?text=${p.title}'">
-                                </div>
-                                <span class="text-[10px] sm:text-xs font-black text-blue-950 truncate w-full text-center">${p.title}</span>
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
+        function drawWheel() {
+            const canvas = document.getElementById("wheelCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
 
-        function inspectPremis(id, title, isProblem) {
-            if(!isProblem) {
-                alert("Ini situasi yang BETUL dan sihat! Sila cari situasi yang SALAH.");
-                return;
+            const width = 360;
+            const center = width / 2;
+            const radius = center - 10;
+
+            ctx.clearRect(0, 0, width, width);
+
+            for (let i = 0; i < sectors.length; i++) {
+                const angle = startAngle + i * arc;
+                ctx.fillStyle = completedQuestions[i] ? "#9E9E9E" : sectors[i].color;
+                ctx.beginPath();
+                ctx.arc(center, center, radius, angle, angle + arc, false);
+                ctx.lineTo(center, center);
+                ctx.fill();
+
+                ctx.strokeStyle = "#FFFFFF";
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font = "bold 16px Arial, sans-serif";
+                ctx.translate(center + Math.cos(angle + arc / 2) * (radius * 0.7), center + Math.sin(angle + arc / 2) * (radius * 0.7));
+                ctx.rotate(angle + arc / 2 + Math.PI / 2);
+                const text = sectors[i].label;
+                ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+                ctx.restore();
             }
 
-            if(!state.m2Found.includes(id)) state.m2Found.push(id);
-
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full bg-white/95 rounded-2xl border-4 border-amber-400 p-2 sm:p-3 shadow-2xl flex flex-col justify-between items-center text-center">
-                    <div class="flex items-center space-x-2 border-b-2 border-slate-200 pb-1 w-full justify-center">
-                        <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-300 shrink-0">
-                            <img src="premis_${id}.png" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/80?text=Isu+${id}'">
-                        </div>
-                        <h3 class="font-game text-sm sm:text-base text-red-600">🔍 KES DITEMUI: ${title.toUpperCase()}</h3>
-                    </div>
-                    
-                    <div class="bg-blue-50 p-2 rounded-xl text-left text-xs font-bold space-y-1 text-slate-800 border-2 border-blue-200 w-full my-1">
-                        <p class="text-blue-900 font-black">🗣️ TUGASAN LISAN MURID (TAHUN 4):</p>
-                        <p>1. Nyatakan masalah kebersihan yang anda lihat dalam gambar ini.</p>
-                        <p>2. Apakah kesan buruk jika situasi ini dibiarkan begitu sahaja?</p>
-                        <p>3. Berikan CADANGAN PENAMBAHBAIKAN dengan bahasa yang sopan.</p>
-                    </div>
-
-                    <div class="flex space-x-2 w-full">
-                        <button onclick="alert('Contoh Jawapan:\n- Masalah: Situasi tidak bersih.\n- Kesan: Menarik lalat dan kuman.\n- Cadangan: Sentiasa menjaga kebersihan.')" class="w-1/2 bg-amber-500 hover:bg-amber-400 text-white font-game py-1.5 rounded-xl text-xs btn-game border-2 border-white">
-                            📋 Contoh Jawapan
-                        </button>
-                        <button onclick="finishPremisInspection()" class="w-1/2 bg-emerald-500 hover:bg-emerald-400 text-white font-game py-1.5 rounded-xl text-xs btn-game border-2 border-white">
-                            Selesai & Teruskan 👍
-                        </button>
-                    </div>
-                </div>
-            `;
+            // Pusat Roda
+            ctx.beginPath();
+            ctx.arc(center, center, 25, 0, 2 * Math.PI);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fill();
+            ctx.strokeStyle = "#B2EBF2";
+            ctx.lineWidth = 5;
+            ctx.stroke();
         }
 
-        function finishPremisInspection() {
-            if(state.m2Found.length >= 3) {
-                state.m2Completed = true;
-                updateProgress(66);
-                confetti();
-                showMenu();
-            } else {
-                startMisi2();
-            }
+        function initWheel() {
+            drawWheel();
+            setTimeout(drawWheel, 100);
+            setTimeout(drawWheel, 500);
         }
 
-        // ==========================================
-        // GAMBAR 6 & 7: MISI 3 (RODA & AUDIO)
-        // ==========================================
-        function startMisi3() {
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full flex flex-col justify-between items-center">
-                    <span class="bg-yellow-400 text-blue-950 px-3 py-0.5 rounded-full text-xs font-black border-2 border-white">MISI 3: RODA CABARAN</span>
-
-                    <!-- RODA DIPERBESARKAN SEIKUT SKRIN -->
-                    <div class="relative w-36 h-36 sm:w-44 sm:h-44 my-auto flex items-center justify-center">
-                        <div id="wheel" class="spin-wheel w-full h-full rounded-full border-8 border-yellow-300 bg-gradient-to-tr from-pink-500 via-purple-500 to-yellow-400 shadow-2xl flex items-center justify-center">
-                            <span class="text-4xl sm:text-5xl">🎡</span>
-                        </div>
-                        <div class="absolute -top-3 text-2xl filter drop-shadow">👇</div>
-                    </div>
-
-                    <button onclick="spinWheel()" class="bg-yellow-400 hover:bg-yellow-300 text-blue-950 font-game py-1.5 px-6 rounded-xl text-sm sm:text-base btn-game border-2 border-white shadow">
-                        🎲 PUTAR RODA!
-                    </button>
-                </div>
-            `;
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initWheel();
+        } else {
+            document.addEventListener('DOMContentLoaded', initWheel);
         }
 
         function spinWheel() {
-            playSfx('sfx-wheel');
-            const wheel = document.getElementById('wheel');
-            const deg = Math.floor(2000 + Math.random() * 2000);
-            wheel.style.transform = `rotate(${deg}deg)`;
+            if (isSpinning) return;
 
-            setTimeout(() => {
-                showMisi3Dialog();
-            }, 3200);
+            // Semak jika semua soalan telah selesai
+            if (completedQuestions.every(status => status === true)) {
+                showPage('pageComplete');
+                return;
+            }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('spinResultBox').style.display = 'none';
+
+            try {
+                const audioSpin = document.getElementById('audioSpin');
+                if (audioSpin) { audioSpin.currentTime = 0; audioSpin.play().catch(e => {}); }
+            } catch(e) {}
+
+            let spinTime = 0;
+            let spinTimeTotal = Math.random() * 1000 + 3000; 
+            let spinAngleStart = Math.random() * 20 + 30;   
+
+            function rotateWheel() {
+                spinTime += 20;
+                if (spinTime >= spinTimeTotal) {
+                    stopRotateWheel();
+                    return;
+                }
+                let progress = spinTime / spinTimeTotal;
+                let easeOutFactor = 1 - Math.pow(1 - progress, 3);
+                let currentSpeed = spinAngleStart * (1 - easeOutFactor);
+                
+                startAngle += (currentSpeed * Math.PI / 180);
+                drawWheel();
+                setTimeout(rotateWheel, 20);
+            }
+            rotateWheel();
         }
 
-        function showMisi3Dialog() {
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full bg-white/95 rounded-2xl border-4 border-purple-400 p-2 sm:p-3 shadow-2xl flex flex-col justify-between items-center">
-                    <div class="flex items-center space-x-2 border-b-2 border-purple-200 pb-1 w-full justify-center">
-                        <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-300 shrink-0">
-                            <img src="misi3_situasi.png" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/80?text=Situasi'">
-                        </div>
-                        <button onclick="playMisi3Audio('audio_misi3.mp3')" class="bg-purple-600 hover:bg-purple-500 text-white font-game px-3 py-1 rounded-xl text-xs btn-game border-2 border-white flex items-center space-x-1">
-                            <span>🔊</span> <span>Dengar Situasi (Audio)</span>
-                        </button>
-                    </div>
+        function stopRotateWheel() {
+            isSpinning = false;
+            document.getElementById('spinBtn').disabled = false;
 
-                    <!-- 3 TAHAP CABARAN DENGAN JAWAPAN LAIN-LAIN -->
-                    <div class="grid grid-cols-3 gap-2 w-full my-1">
-                        <div class="bg-blue-50 p-2 rounded-xl border-2 border-blue-200 text-left">
-                            <span class="text-blue-700 font-black text-[11px] block">TAHAP 1 (Menaakul):</span>
-                            <p class="text-slate-800 text-[10px] font-bold leading-tight">Mengapakah tindakan rakan tersebut tidak mematuhi etika kebersihan kantin?</p>
-                        </div>
-                        <div class="bg-emerald-50 p-2 rounded-xl border-2 border-emerald-200 text-left">
-                            <span class="text-emerald-700 font-black text-[11px] block">TAHAP 2 (Teguran):</span>
-                            <p class="text-slate-800 text-[10px] font-bold leading-tight">Bina ayat teguran yang bersopan santun untuk menasihati rakan tersebut.</p>
-                        </div>
-                        <div class="bg-purple-50 p-2 rounded-xl border-2 border-purple-200 text-left">
-                            <span class="text-purple-700 font-black text-[11px] block">TAHAP 3 (Simulasi):</span>
-                            <p class="text-slate-800 text-[10px] font-bold leading-tight">Lakokan watak Pengawas Kantin yang memberikan arahan pembersihan secara tegas & berhemah.</p>
-                        </div>
-                    </div>
+            try {
+                const audioSpin = document.getElementById('audioSpin');
+                if(audioSpin) audioSpin.pause();
+                const audioDing = document.getElementById('audioDing');
+                if(audioDing) { audioDing.currentTime = 0; audioDing.play().catch(e => {}); }
+            } catch(e) {}
 
-                    <button onclick="finishMisi3()" class="bg-emerald-500 hover:bg-emerald-400 text-white font-game py-1.5 px-6 rounded-xl text-xs sm:text-sm btn-game border-2 border-white">
-                        SELESAI MISI 3 🎉
-                    </button>
-                </div>
-            `;
+            const degrees = (startAngle * 180 / Math.PI) % 360;
+            const arcd = (arc * 180 / Math.PI);
+            
+            let index = Math.floor((360 - (degrees % 360) + 270) % 360 / arcd);
+            index = index % sectors.length;
+
+            selectedQuestionIndex = index;
+
+            // Jika soalan ini dah siap, pilih soalan terdekat yang belum siap
+            if (completedQuestions[selectedQuestionIndex]) {
+                selectedQuestionIndex = completedQuestions.findIndex(status => status === false);
+            }
+
+            const q = questionsList[selectedQuestionIndex];
+            document.getElementById('selectedSpTitle').innerText = q.title;
+            document.getElementById('spinResultBox').style.display = 'block';
         }
 
-        function playMisi3Audio(src) {
-            const a = document.getElementById('misi3-audio');
-            a.src = src;
-            a.play().catch(()=> alert("Sila pastikan fail " + src + " dimasukkan."));
+        function startSpChallenge() {
+            if (selectedQuestionIndex === null) return;
+            showPage('pageQuestion');
+            loadQuestion();
         }
 
-        function finishMisi3() {
-            state.m3Completed = true;
-            updateProgress(100);
-            showTamatGame();
+        function loadQuestion() {
+            const q = questionsList[selectedQuestionIndex];
+            
+            document.getElementById('spBadge').innerText = `SOALAN ${q.id}`;
+            document.getElementById('questionImage').src = q.imageFile;
+            document.getElementById('questionInstruction').innerText = q.instruction;
+
+            // Kemaskini Progress Dots (1-10)
+            const dots = document.querySelectorAll('#progressDots .dot');
+            dots.forEach((dot, idx) => {
+                dot.className = 'dot';
+                dot.innerText = idx + 1;
+                if (completedQuestions[idx]) dot.classList.add('completed');
+                if (idx === selectedQuestionIndex) dot.classList.add('active');
+            });
+
+            document.getElementById('tAudioText').innerText = q.audioText;
+            document.getElementById('tAnswer').innerText = q.answer;
+            
+            const kwContainer = document.getElementById('tKeywords');
+            kwContainer.innerHTML = '';
+            q.keywords.forEach(kw => {
+                const tag = document.createElement('span');
+                tag.className = 'kw-tag';
+                tag.innerText = kw;
+                kwContainer.appendChild(tag);
+            });
+
+            document.getElementById('evalFeedback').innerText = '';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('teacherContent').classList.remove('show');
         }
 
-        // ==========================================
-        // GAMBAR 8: TAMAT GAME (VIDEO/GIF & CHEER)
-        // ==========================================
-        function showTamatGame() {
-            playSfx('sfx-cheer');
-            confetti({ particleCount: 200, spread: 100 });
-            const main = document.getElementById('app-content');
-            main.innerHTML = `
-                <div class="w-full h-full flex flex-col justify-between items-center text-center">
-                    <!-- RUANG VIDEO / GIF MISI SELESAI -->
-                    <div class="w-full h-32 sm:h-36 bg-black rounded-xl overflow-hidden border-4 border-yellow-300 shadow-xl flex items-center justify-center">
-                        <img src="misi_selesai.gif" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/600x200/10b981/ffffff?text=TAHNIAH!+MISI+SELESAI'">
-                    </div>
+        function playQuestionAudio() {
+            const q = questionsList[selectedQuestionIndex];
+            if (!q) return;
 
-                    <h2 class="font-game text-lg sm:text-2xl text-yellow-300 drop-shadow">TAHNIAH, EJEN KANTIN SIHAT!</h2>
-                    <p class="text-xs text-white font-black opacity-90">Kantin sekolah kini bersih, selamat, dan sihat!</p>
-
-                    <div class="flex space-x-3">
-                        <button onclick="location.reload()" class="bg-blue-500 hover:bg-blue-400 text-white font-game px-4 py-1.5 rounded-xl text-xs btn-game border-2 border-white">
-                            🔄 MAIN SEMULA
-                        </button>
-                        <button onclick="showMenu()" class="bg-emerald-500 hover:bg-emerald-400 text-white font-game px-4 py-1.5 rounded-xl text-xs btn-game border-2 border-white">
-                            🏠 MENU UTAMA
-                        </button>
-                    </div>
-                </div>
-            `;
+            const player = document.getElementById('audioQuestion');
+            player.src = q.audioFile;
+            player.play().catch(e => {
+                alert("Fail audio (" + q.audioFile + ") belum ada / tidak dijumpai.");
+            });
         }
 
-        window.onload = showMenu;
+        function toggleTeacherPanel() {
+            const content = document.getElementById('teacherContent');
+            content.classList.toggle('show');
+        }
+
+        function evaluateAnswer(type) {
+            const feedbackEl = document.getElementById('evalFeedback');
+            if (type === 'correct') {
+                feedbackEl.style.color = "var(--green)";
+                feedbackEl.innerText = "Syabas! Jawapan murid sesuai, kritis, dan tepat.";
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                
+                // Tandakan soalan ini telah selesai
+                completedQuestions[selectedQuestionIndex] = true;
+
+                try {
+                    const audioCheer = document.getElementById('audioCheer');
+                    if(audioCheer) { audioCheer.currentTime = 0; audioCheer.play().catch(e => {}); }
+                } catch(e) {}
+            } else if (type === 'guidance') {
+                feedbackEl.style.color = "var(--accent-hover)";
+                feedbackEl.innerText = "Bagus! Bimbing murid untuk memberikan hujah dan jawapan yang lebih bernas.";
+            } else if (type === 'retry') {
+                feedbackEl.style.color = "var(--red)";
+                feedbackEl.innerText = "Sila berikan peluang kepada murid untuk mencuba lagi.";
+                playQuestionAudio();
+            }
+        }
+
+        function nextQuestion() {
+            if (completedQuestions.every(status => status === true)) {
+                showPage('pageComplete');
+            } else {
+                goHome();
+            }
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            if (pageId === 'pageHome') {
+                setTimeout(drawWheel, 50);
+            }
+        }
+
+        function goHome() {
+            showPage('pageHome');
+            document.getElementById('spinResultBox').style.display = 'none';
+        }
+
+        function restartGame() {
+            completedQuestions = new Array(10).fill(false);
+            selectedQuestionIndex = null;
+            goHome();
+        }
+
+        function showModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
 </html>
